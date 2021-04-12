@@ -1,27 +1,28 @@
 <template>
     <el-row :gutter="20">
       <el-col  :span="8">
+        <h4 class="error" v-if="errors" v-for="error in errors" >{{ error[0] }}</h4>
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="name">
             <el-input v-model="form.name"></el-input>
           </el-form-item>
           <el-form-item label="bedrooms">
-            <el-input v-model="form.bedrooms"></el-input>
+            <el-input-number v-model="form.bedrooms"></el-input-number>
           </el-form-item>
           <el-form-item label="bathrooms">
-            <el-input v-model="form.bathrooms"></el-input>
+            <el-input-number v-model="form.bathrooms"></el-input-number>
           </el-form-item>
           <el-form-item label="storeys">
-            <el-input v-model="form.storeys"></el-input>
+            <el-input-number v-model="form.storeys"></el-input-number>
           </el-form-item>
           <el-form-item label="garages">
-            <el-input v-model="form.garages"></el-input>
+            <el-input-number v-model="form.garages"></el-input-number>
           </el-form-item>
           <el-form-item label="min price">
-            <el-input v-model="form.min_price"></el-input>
+            <el-input-number v-model="form.min_price"></el-input-number>
           </el-form-item>
           <el-form-item label="max price">
-            <el-input v-model="form.max_price"></el-input>
+            <el-input-number v-model="form.max_price"></el-input-number>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">Search</el-button>
@@ -69,7 +70,8 @@ export default {
     return {
       form     : {},
       tableData: [],
-      loading  : false
+      loading  : false,
+      errors:''
     }
   },
   mounted () {
@@ -81,9 +83,11 @@ export default {
       axios.post( 'api/house', this.form )
            .then( ( resp ) => {
              this.tableData= resp.data.data
+             this.errors=''
            } )
-           .catch( ( e ) => {
-
+           .catch( ( error ) => {
+             console.log(error.response.data.errors)
+             this.errors=error.response.data.errors
            } )
            .finally( () => {
              this.loading = false
@@ -95,5 +99,8 @@ export default {
 <style>
 .el-row{
   margin:50px 0!important;
+}
+.error{
+  color: red;
 }
 </style>

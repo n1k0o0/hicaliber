@@ -3579,12 +3579,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       form: {},
       tableData: [],
-      loading: false
+      loading: false,
+      errors: ''
     };
   },
   mounted: function mounted() {
@@ -3597,7 +3599,11 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       axios.post('api/house', this.form).then(function (resp) {
         _this.tableData = resp.data.data;
-      })["catch"](function (e) {})["finally"](function () {
+        _this.errors = '';
+      })["catch"](function (error) {
+        console.log(error.response.data.errors);
+        _this.errors = error.response.data.errors;
+      })["finally"](function () {
         _this.loading = false;
       });
     }
@@ -99246,6 +99252,12 @@ var render = function() {
         "el-col",
         { attrs: { span: 8 } },
         [
+          _vm._l(_vm.errors, function(error) {
+            return _vm.errors
+              ? _c("h4", { staticClass: "error" }, [_vm._v(_vm._s(error[0]))])
+              : _vm._e()
+          }),
+          _vm._v(" "),
           _c(
             "el-form",
             { ref: "form", attrs: { model: _vm.form, "label-width": "120px" } },
@@ -99271,7 +99283,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "bedrooms" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.bedrooms,
                       callback: function($$v) {
@@ -99288,7 +99300,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "bathrooms" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.bathrooms,
                       callback: function($$v) {
@@ -99305,7 +99317,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "storeys" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.storeys,
                       callback: function($$v) {
@@ -99322,7 +99334,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "garages" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.garages,
                       callback: function($$v) {
@@ -99339,7 +99351,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "min price" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.min_price,
                       callback: function($$v) {
@@ -99356,7 +99368,7 @@ var render = function() {
                 "el-form-item",
                 { attrs: { label: "max price" } },
                 [
-                  _c("el-input", {
+                  _c("el-input-number", {
                     model: {
                       value: _vm.form.max_price,
                       callback: function($$v) {
@@ -99384,7 +99396,7 @@ var render = function() {
             1
           )
         ],
-        1
+        2
       ),
       _vm._v(" "),
       _c(

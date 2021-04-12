@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchHouseRequest;
 use App\Http\Resources\HouseResource;
 use App\Models\House;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,7 +16,7 @@ class Controller extends BaseController
 {
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	public function search( Request $request ): HouseResource
+	public function search( SearchHouseRequest $request ): HouseResource
 	{
 		$query = House::when( $request->name, function ( Builder $query ) use ( $request ) {
 			$query->where( 'name', 'like', '%' . $request->name . '%' );
